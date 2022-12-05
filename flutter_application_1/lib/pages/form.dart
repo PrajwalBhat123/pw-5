@@ -1,119 +1,178 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyForm());
+enum SingingCharacter { male, female, other }
 
-class MyForm extends StatelessWidget {
-  const MyForm({Key? key}) : super(key: key);
+void main() => runApp(const MyUserForm());
+
+class MyUserForm extends StatelessWidget {
+  const MyUserForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final formTitle = "Form Title";
+    const appTitle = 'Form Validation Demo';
+
     return MaterialApp(
-      title: formTitle,
+      title: appTitle,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(formTitle),
+          title: const Text(appTitle),
         ),
-        body: MyUserForm(),
+        body: const MyCustomForm(),
       ),
     );
   }
 }
 
-class MyUserForm extends StatefulWidget {
+class MyCustomForm extends StatefulWidget {
+  const MyCustomForm({super.key});
+
   @override
-  MyUserFormState createState() {
-    return MyUserFormState();
+  MyCustomFormState createState() {
+    return MyCustomFormState();
   }
 }
 
-class MyUserFormState extends State<MyUserForm> {
+class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
-  String? gender;
+  SingingCharacter? _character = SingingCharacter.male;
 
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: "Enter your name",
-                  labelText: "Name",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your name!";
-                  }
-                }),
-            TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.mail_outlined),
-                  hintText: "Enter your email id",
-                  labelText: "Mail Id",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your email id!";
-                  }
-                }),
-            TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: "Enter your age",
-                  labelText: "Age",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your age!";
-                  }
-                }),
-            Container(
-                child: Row(children: <Widget>[
-              RadioListTile(
-                  title: Text("Male"),
-                  value: "male",
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                    });
-                  }),
-              Icon(Icons.male_outlined),
-              RadioListTile(
-                  title: Text("Male"),
-                  value: "male",
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                    });
-                  }),
-              Icon(Icons.female_outlined),
-              RadioListTile(
-                  title: Text("Male"),
-                  value: "male",
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                    });
-                  }),
-              Icon(Icons.transgender_outlined),
-            ])),
-            Container(
-              padding: EdgeInsets.only(left: 100.0, top: 50.0),
-              child: ElevatedButton(
-                  child: Text("Submit"),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print("Form is valid");
-                    }
-                  }),
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.person),
+              hintText: 'Enter your full name',
+              labelText: 'Name',
             ),
-          ]),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.phone),
+              hintText: 'Enter a phone number',
+              labelText: 'Phone',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter valid phone number';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.calendar_today),
+              hintText: 'Enter your date of birth',
+              labelText: 'Dob',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter valid date';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.calendar_today),
+              hintText: 'Enter your age',
+              labelText: 'Age',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter valid age';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.align_vertical_bottom_sharp),
+              hintText:
+                  'Enter your level of training(Beginner,Intermediate,Advanced)',
+              labelText: 'Level',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter valid level';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.calendar_today),
+              hintText: 'Ex. Sugar,BP,Gastric,None',
+              labelText: 'Medical Problems',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter valid data';
+              }
+              return null;
+            },
+          ),
+          ListTile(
+            title: const Text("Male"),
+            horizontalTitleGap: 10,
+            leading: Radio<SingingCharacter>(
+              value: SingingCharacter.male,
+              groupValue: _character,
+              onChanged: (SingingCharacter? value) {
+                setState(() {
+                  _character = value;
+                });
+              },
+            ),
+          ),   
+          ListTile(
+            title: const Text("Female"),
+            leading: Radio<SingingCharacter>(
+              value: SingingCharacter.female,
+              groupValue: _character,
+              onChanged: (SingingCharacter? value) {
+                setState(() {
+                  _character = value;
+                });
+              },
+            ),
+          ),
+          ListTile(
+            title: const Text("Other"),
+            leading: Radio<SingingCharacter>(
+              value: SingingCharacter.other,
+              groupValue: _character,
+              onChanged: (SingingCharacter? value) {
+                setState(() {
+                  _character = value;
+                });
+              },
+            ),
+          ),  
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+              },
+              child: const Text('Submit'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
